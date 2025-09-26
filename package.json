@@ -1,0 +1,17 @@
+{
+  "name": "n8n-nodes-gatekit",
+  "version": "0.0.1",
+  "description": "n8n community nodes for GateKit API",
+  "main": "dist/index.js",
+  "n8n": {
+    "nodes": ["dist/nodes/GateKit.node.js"],
+    "credentials": ["dist/credentials/GateKitApi.credentials.js"]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/filipexyz/n8n-nodes-gatekit.git"
+  },
+  "author": "GateKit",
+  "license": "MIT",
+  "keywords": ["n8n", "n8n-community-node", "gatekit", "messaging"]
+}
