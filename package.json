@@ -1,17 +1,54 @@
 {
   "name": "n8n-nodes-gatekit",
-  "version": "0.0.1",
-  "description": "n8n community nodes for GateKit API",
-  "main": "dist/index.js",
-  "n8n": {
-    "nodes": ["dist/nodes/GateKit.node.js"],
-    "credentials": ["dist/credentials/GateKitApi.credentials.js"]
+  "version": "1.0.0",
+  "description": "n8n community node for GateKit universal messaging gateway",
+  "keywords": [
+    "n8n-community-node-package",
+    "gatekit",
+    "messaging",
+    "automation",
+    "communication"
+  ],
+  "license": "MIT",
+  "homepage": "https://gatekit.dev",
+  "author": {
+    "name": "GateKit",
+    "email": "contact@gatekit.dev"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/filipexyz/n8n-nodes-gatekit.git"
+    "url": "git+https://github.com/gatekit/n8n-nodes-gatekit.git"
   },
-  "author": "GateKit",
-  "license": "MIT",
-  "keywords": ["n8n", "n8n-community-node", "gatekit", "messaging"]
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lint:fix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/GateKitApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/GateKit/GateKit.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "gulp": "^4.0.2",
+    "n8n-workflow": "*",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
 }
