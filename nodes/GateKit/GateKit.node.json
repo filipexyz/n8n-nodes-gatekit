@@ -1,0 +1,20 @@
+{
+  "node": "n8n-nodes-gatekit.GateKit",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": [
+    "Communication"
+  ],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://docs.gatekit.dev/authentication"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://docs.gatekit.dev"
+      }
+    ]
+  }
+}
