@@ -24,6 +24,7 @@ npm install n8n-nodes-gatekit
 - **members remove**: Remove a member from a project
 - **projects create**: Create a new project
 - **projects list**: List all projects
+- **projects update**: Update project name, description and settings
 - **platforms create**: Configure a new platform integration
 - **platforms list**: List configured platforms for project
 - **platforms get**: Get platform configuration details
@@ -42,6 +43,9 @@ npm install n8n-nodes-gatekit
 - **keys list**: List all API keys for project
 - **keys revoke**: Revoke an API key
 - **keys roll**: Roll an API key (generate new key, revoke old after 24h)
+- **platforms logs list**: List platform processing logs for a project
+- **platforms logs get**: List logs for a specific platform configuration
+- **platforms logs stats**: Get platform logs statistics and recent errors
 
 ## Usage Examples
 
