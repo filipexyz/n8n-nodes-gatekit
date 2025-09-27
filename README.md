@@ -18,6 +18,10 @@ npm install n8n-nodes-gatekit
 
 ## Supported Operations
 
+- **members list**: List all members of a project
+- **members add**: Add a member to a project
+- **members update**: Update a member role in a project
+- **members remove**: Remove a member from a project
 - **projects create**: Create a new project
 - **projects list**: List all projects
 - **platforms create**: Configure a new platform integration
