@@ -34,13 +34,269 @@ export class GateKit implements INodeType {
       type: 'options',
       noDataExpression: true,
       options: [
+        { name: 'Members', value: 'members' },
         { name: 'Projects', value: 'projects' },
         { name: 'Platforms', value: 'platforms' },
         { name: 'Messages', value: 'messages' },
         { name: 'ApiKeys', value: 'apikeys' }
       ],
-      default: 'projects',
+      default: 'members',
     },
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+          show: {
+            resource: ['members'],
+          },
+        },
+        options: [
+          {
+          name: 'List',
+          value: 'list',
+          action: 'List all members of a project',
+          description: 'List all members of a project',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/:slug/members',
+              
+            },
+          },
+        },
+          {
+          name: 'Add',
+          value: 'add',
+          action: 'Add a member to a project',
+          description: 'Add a member to a project',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/:slug/members',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Update',
+          value: 'update',
+          action: 'Update a member role in a project',
+          description: 'Update a member role in a project',
+          routing: {
+            request: {
+              method: 'PATCH',
+              url: '=/api/v1/projects/:slug/members/:userId',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Remove',
+          value: 'remove',
+          action: 'Remove a member from a project',
+          description: 'Remove a member from a project',
+          routing: {
+            request: {
+              method: 'DELETE',
+              url: '=/api/v1/projects/:slug/members/:userId',
+              
+            },
+          },
+        }
+        ],
+        default: 'list',
+      },
+      {
+          displayName: 'Slug',
+          name: 'slug',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'slug parameter',
+          displayOptions: {
+            show: {
+              resource: ['members'],
+              operation: ['list'],
+            },
+          },
+        },
+      {
+            displayName: 'Email of user to add',
+            name: 'email',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['members'],
+                operation: ['add'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'email': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Role to assign to the member',
+            name: 'role',
+            type: 'string',
+            required: true,
+            default: "",
+            options: [{name: 'owner', value: 'owner'}, {name: 'admin', value: 'admin'}, {name: 'member', value: 'member'}, {name: 'viewer', value: 'viewer'}],
+            displayOptions: {
+              show: {
+                resource: ['members'],
+                operation: ['add'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'role': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Slug',
+          name: 'slug',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'slug parameter',
+          displayOptions: {
+            show: {
+              resource: ['members'],
+              operation: ['add'],
+            },
+          },
+        },
+      {
+            displayName: 'User ID of the member to update',
+            name: 'userId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['members'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'userId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'New role to assign',
+            name: 'role',
+            type: 'string',
+            required: true,
+            default: "",
+            options: [{name: 'admin', value: 'admin'}, {name: 'member', value: 'member'}, {name: 'viewer', value: 'viewer'}],
+            displayOptions: {
+              show: {
+                resource: ['members'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'role': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Slug',
+          name: 'slug',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'slug parameter',
+          displayOptions: {
+            show: {
+              resource: ['members'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+          displayName: 'UserId',
+          name: 'userId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'userId parameter',
+          displayOptions: {
+            show: {
+              resource: ['members'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+            displayName: 'User ID of the member to remove',
+            name: 'userId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['members'],
+                operation: ['remove'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'userId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Slug',
+          name: 'slug',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'slug parameter',
+          displayOptions: {
+            show: {
+              resource: ['members'],
+              operation: ['remove'],
+            },
+          },
+        },
+      {
+          displayName: 'UserId',
+          name: 'userId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'userId parameter',
+          displayOptions: {
+            show: {
+              resource: ['members'],
+              operation: ['remove'],
+            },
+          },
+        },
       {
         displayName: 'Operation',
         name: 'operation',
