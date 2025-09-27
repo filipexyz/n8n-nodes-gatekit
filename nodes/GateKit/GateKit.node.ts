@@ -38,7 +38,8 @@ export class GateKit implements INodeType {
         { name: 'Projects', value: 'projects' },
         { name: 'Platforms', value: 'platforms' },
         { name: 'Messages', value: 'messages' },
-        { name: 'ApiKeys', value: 'apikeys' }
+        { name: 'ApiKeys', value: 'apikeys' },
+        { name: 'Platform Logs', value: 'platform logs' }
       ],
       default: 'members',
     },
@@ -333,6 +334,19 @@ export class GateKit implements INodeType {
               
             },
           },
+        },
+          {
+          name: 'Update',
+          value: 'update',
+          action: 'Update project name, description and settings',
+          description: 'Update project name, description and settings',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/:slug',
+              body: {},
+            },
+          },
         }
         ],
         default: 'create',
@@ -359,6 +373,27 @@ export class GateKit implements INodeType {
             },
           },
       {
+            displayName: 'Project description',
+            name: 'description',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['projects'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'description': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
             displayName: 'Project environment',
             name: 'environment',
             type: 'string',
@@ -379,6 +414,104 @@ export class GateKit implements INodeType {
               },
             },
           },
+      {
+            displayName: 'Project name',
+            name: 'name',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['projects'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Project description',
+            name: 'description',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['projects'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'description': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Project environment',
+            name: 'environment',
+            type: 'string',
+            required: false,
+            default: "",
+            options: [{name: 'development', value: 'development'}, {name: 'staging', value: 'staging'}, {name: 'production', value: 'production'}],
+            displayOptions: {
+              show: {
+                resource: ['projects'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'environment': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Set as default project',
+            name: 'isDefault',
+            type: 'boolean',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['projects'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'isDefault': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Slug',
+          name: 'slug',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'slug parameter',
+          displayOptions: {
+            show: {
+              resource: ['projects'],
+              operation: ['update'],
+            },
+          },
+        },
       {
         displayName: 'Operation',
         name: 'operation',
@@ -1807,6 +1940,388 @@ export class GateKit implements INodeType {
             show: {
               resource: ['apikeys'],
               operation: ['roll'],
+            },
+          },
+        },
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+          show: {
+            resource: ['platform logs'],
+          },
+        },
+        options: [
+          {
+          name: 'Logs',
+          value: 'logs',
+          action: 'List platform processing logs for a project',
+          description: 'List platform processing logs for a project',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/:slug/platforms/logs',
+              
+            },
+          },
+        },
+          {
+          name: 'Logs',
+          value: 'logs',
+          action: 'List logs for a specific platform configuration',
+          description: 'List logs for a specific platform configuration',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/:slug/platforms/:platformId/logs',
+              
+            },
+          },
+        },
+          {
+          name: 'Logs',
+          value: 'logs',
+          action: 'Get platform logs statistics and recent errors',
+          description: 'Get platform logs statistics and recent errors',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/:slug/platforms/logs/stats',
+              
+            },
+          },
+        }
+        ],
+        default: 'logs',
+      },
+      {
+            displayName: 'Filter by platform (telegram, discord)',
+            name: 'platform',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'platform': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter by log level',
+            name: 'level',
+            type: 'string',
+            required: false,
+            default: "",
+            options: [{name: 'info', value: 'info'}, {name: 'warn', value: 'warn'}, {name: 'error', value: 'error'}, {name: 'debug', value: 'debug'}],
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'level': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter by log category',
+            name: 'category',
+            type: 'string',
+            required: false,
+            default: "",
+            options: [{name: 'connection', value: 'connection'}, {name: 'webhook', value: 'webhook'}, {name: 'message', value: 'message'}, {name: 'error', value: 'error'}, {name: 'auth', value: 'auth'}, {name: 'general', value: 'general'}],
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'category': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter logs after this date (ISO 8601)',
+            name: 'startDate',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'startDate': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter logs before this date (ISO 8601)',
+            name: 'endDate',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'endDate': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Number of logs to return (1-1000)',
+            name: 'limit',
+            type: 'number',
+            required: false,
+            default: "100",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'limit': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Number of logs to skip',
+            name: 'offset',
+            type: 'number',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'offset': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Slug',
+          name: 'slug',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'slug parameter',
+          displayOptions: {
+            show: {
+              resource: ['platform logs'],
+              operation: ['logs'],
+            },
+          },
+        },
+      {
+            displayName: 'Filter by log level',
+            name: 'level',
+            type: 'string',
+            required: false,
+            default: "",
+            options: [{name: 'info', value: 'info'}, {name: 'warn', value: 'warn'}, {name: 'error', value: 'error'}, {name: 'debug', value: 'debug'}],
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'level': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter by log category',
+            name: 'category',
+            type: 'string',
+            required: false,
+            default: "",
+            options: [{name: 'connection', value: 'connection'}, {name: 'webhook', value: 'webhook'}, {name: 'message', value: 'message'}, {name: 'error', value: 'error'}, {name: 'auth', value: 'auth'}, {name: 'general', value: 'general'}],
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'category': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter logs after this date (ISO 8601)',
+            name: 'startDate',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'startDate': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter logs before this date (ISO 8601)',
+            name: 'endDate',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'endDate': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Number of logs to return (1-1000)',
+            name: 'limit',
+            type: 'number',
+            required: false,
+            default: "100",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'limit': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Number of logs to skip',
+            name: 'offset',
+            type: 'number',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platform logs'],
+                operation: ['logs'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'offset': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Slug',
+          name: 'slug',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'slug parameter',
+          displayOptions: {
+            show: {
+              resource: ['platform logs'],
+              operation: ['logs'],
+            },
+          },
+        },
+      {
+          displayName: 'PlatformId',
+          name: 'platformId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'platformId parameter',
+          displayOptions: {
+            show: {
+              resource: ['platform logs'],
+              operation: ['logs'],
+            },
+          },
+        },
+      {
+          displayName: 'Slug',
+          name: 'slug',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'slug parameter',
+          displayOptions: {
+            show: {
+              resource: ['platform logs'],
+              operation: ['logs'],
             },
           },
         }
