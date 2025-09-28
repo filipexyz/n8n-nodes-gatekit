@@ -600,6 +600,32 @@ export class GateKit implements INodeType {
               
             },
           },
+        },
+          {
+          name: 'Qr-code',
+          value: 'qr-code',
+          action: 'Get QR code for WhatsApp authentication',
+          description: 'Get QR code for WhatsApp authentication',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}/qr-code',
+              
+            },
+          },
+        },
+          {
+          name: 'Supported',
+          value: 'supported',
+          action: 'List supported platforms with credential requirements',
+          description: 'List supported platforms with credential requirements',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/platforms/supported',
+              
+            },
+          },
         }
         ],
         default: 'create',
@@ -610,7 +636,7 @@ export class GateKit implements INodeType {
             type: 'string',
             required: true,
             default: "",
-            options: [{name: 'discord', value: 'discord'}, {name: 'telegram', value: 'telegram'}],
+            options: [{name: 'discord', value: 'discord'}, {name: 'telegram', value: 'telegram'}, {name: 'whatsapp-evo', value: 'whatsapp-evo'}],
             displayOptions: {
               show: {
                 resource: ['platforms'],
@@ -626,7 +652,7 @@ export class GateKit implements INodeType {
             },
           },
       {
-            displayName: 'Platform credentials (JSON object)',
+            displayName: 'Platform credentials (JSON object). Use "gatekit platforms supported" to see required fields for each platform.',
             name: 'credentials',
             type: 'json',
             required: true,
@@ -766,7 +792,7 @@ export class GateKit implements INodeType {
           },
         },
       {
-            displayName: 'Updated credentials',
+            displayName: 'Updated credentials (JSON object)',
             name: 'credentials',
             type: 'json',
             required: false,
@@ -955,6 +981,55 @@ export class GateKit implements INodeType {
           },
         },
       {
+            displayName: 'WhatsApp Platform ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['qr-code'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['qr-code'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['qr-code'],
+            },
+          },
+        },
+      {
         displayName: 'Operation',
         name: 'operation',
         type: 'options',
@@ -1073,12 +1148,12 @@ export class GateKit implements INodeType {
         default: 'list',
       },
       {
-            displayName: 'Filter by platform (telegram, discord)',
+            displayName: 'Filter by platform (telegram, discord, whatsapp-evo)',
             name: 'platform',
             type: 'string',
             required: false,
             default: "",
-            options: [{name: 'telegram', value: 'telegram'}, {name: 'discord', value: 'discord'}],
+            options: [{name: 'telegram', value: 'telegram'}, {name: 'discord', value: 'discord'}, {name: 'whatsapp-evo', value: 'whatsapp-evo'}],
             displayOptions: {
               show: {
                 resource: ['messages'],
