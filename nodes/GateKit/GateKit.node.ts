@@ -36,8 +36,8 @@ export class GateKit implements INodeType {
       options: [
         { name: 'Members', value: 'members' },
         { name: 'Projects', value: 'projects' },
-        { name: 'Messages', value: 'messages' },
         { name: 'Platforms', value: 'platforms' },
+        { name: 'Messages', value: 'messages' },
         { name: 'ApiKeys', value: 'apikeys' },
         { name: 'Platform Logs', value: 'platform logs' }
       ],
@@ -509,6 +509,607 @@ export class GateKit implements INodeType {
             show: {
               resource: ['projects'],
               operation: ['update'],
+            },
+          },
+        },
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+          show: {
+            resource: ['platforms'],
+          },
+        },
+        options: [
+          {
+          name: 'Create',
+          value: 'create',
+          action: 'Configure a new platform integration',
+          description: 'Configure a new platform integration',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'List',
+          value: 'list',
+          action: 'List configured platforms for project',
+          description: 'List configured platforms for project',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms',
+              
+            },
+          },
+        },
+          {
+          name: 'Get',
+          value: 'get',
+          action: 'Get platform configuration details',
+          description: 'Get platform configuration details',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
+              
+            },
+          },
+        },
+          {
+          name: 'Update',
+          value: 'update',
+          action: 'Update platform configuration',
+          description: 'Update platform configuration',
+          routing: {
+            request: {
+              method: 'PATCH',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Delete',
+          value: 'delete',
+          action: 'Remove platform configuration',
+          description: 'Remove platform configuration',
+          routing: {
+            request: {
+              method: 'DELETE',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
+              
+            },
+          },
+        },
+          {
+          name: 'Register-webhook',
+          value: 'register-webhook',
+          action: 'Register webhook URL with platform provider',
+          description: 'Register webhook URL with platform provider',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}/register-webhook',
+              
+            },
+          },
+        },
+          {
+          name: 'Qr-code',
+          value: 'qr-code',
+          action: 'Get QR code for WhatsApp authentication',
+          description: 'Get QR code for WhatsApp authentication',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}/qr-code',
+              
+            },
+          },
+        },
+          {
+          name: 'Supported',
+          value: 'supported',
+          action: 'List supported platforms with credential requirements',
+          description: 'List supported platforms with credential requirements',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/platforms/supported',
+              
+            },
+          },
+        }
+        ],
+        default: 'create',
+      },
+      {
+            displayName: 'Platform type',
+            name: 'platform',
+            type: 'string',
+            required: true,
+            default: "",
+            options: [{name: 'discord', value: 'discord'}, {name: 'telegram', value: 'telegram'}, {name: 'whatsapp-evo', value: 'whatsapp-evo'}],
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'platform': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Friendly name for the platform instance',
+            name: 'name',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Optional description for the platform instance',
+            name: 'description',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'description': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Platform credentials (JSON object). Use "gatekit platforms supported" to see required fields for each platform.',
+            name: 'credentials',
+            type: 'json',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                body: {
+                  'credentials': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Enable platform',
+            name: 'isActive',
+            type: 'boolean',
+            required: false,
+            default: true,
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'isActive': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Enable test mode',
+            name: 'testMode',
+            type: 'boolean',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'testMode': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['create'],
+            },
+          },
+        },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['list'],
+            },
+          },
+        },
+      {
+            displayName: 'Platform ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['get'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['get'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['get'],
+            },
+          },
+        },
+      {
+            displayName: 'Updated friendly name',
+            name: 'name',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Updated description',
+            name: 'description',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'description': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Updated credentials (JSON object)',
+            name: 'credentials',
+            type: 'json',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                body: {
+                  'credentials': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Enable/disable platform',
+            name: 'isActive',
+            type: 'boolean',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'isActive': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Enable/disable test mode',
+            name: 'testMode',
+            type: 'boolean',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'testMode': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+            displayName: 'Platform ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['delete'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['delete'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['delete'],
+            },
+          },
+        },
+      {
+            displayName: 'Platform ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['register-webhook'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['register-webhook'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['register-webhook'],
+            },
+          },
+        },
+      {
+            displayName: 'WhatsApp Platform ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['platforms'],
+                operation: ['qr-code'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['qr-code'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['platforms'],
+              operation: ['qr-code'],
             },
           },
         },
@@ -1285,607 +1886,6 @@ export class GateKit implements INodeType {
             show: {
               resource: ['messages'],
               operation: ['sent'],
-            },
-          },
-        },
-      {
-        displayName: 'Operation',
-        name: 'operation',
-        type: 'options',
-        noDataExpression: true,
-        displayOptions: {
-          show: {
-            resource: ['platforms'],
-          },
-        },
-        options: [
-          {
-          name: 'Create',
-          value: 'create',
-          action: 'Configure a new platform integration',
-          description: 'Configure a new platform integration',
-          routing: {
-            request: {
-              method: 'POST',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms',
-              body: {},
-            },
-          },
-        },
-          {
-          name: 'List',
-          value: 'list',
-          action: 'List configured platforms for project',
-          description: 'List configured platforms for project',
-          routing: {
-            request: {
-              method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms',
-              
-            },
-          },
-        },
-          {
-          name: 'Get',
-          value: 'get',
-          action: 'Get platform configuration details',
-          description: 'Get platform configuration details',
-          routing: {
-            request: {
-              method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
-              
-            },
-          },
-        },
-          {
-          name: 'Update',
-          value: 'update',
-          action: 'Update platform configuration',
-          description: 'Update platform configuration',
-          routing: {
-            request: {
-              method: 'PATCH',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
-              body: {},
-            },
-          },
-        },
-          {
-          name: 'Delete',
-          value: 'delete',
-          action: 'Remove platform configuration',
-          description: 'Remove platform configuration',
-          routing: {
-            request: {
-              method: 'DELETE',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
-              
-            },
-          },
-        },
-          {
-          name: 'Register-webhook',
-          value: 'register-webhook',
-          action: 'Register webhook URL with platform provider',
-          description: 'Register webhook URL with platform provider',
-          routing: {
-            request: {
-              method: 'POST',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}/register-webhook',
-              
-            },
-          },
-        },
-          {
-          name: 'Qr-code',
-          value: 'qr-code',
-          action: 'Get QR code for WhatsApp authentication',
-          description: 'Get QR code for WhatsApp authentication',
-          routing: {
-            request: {
-              method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}/qr-code',
-              
-            },
-          },
-        },
-          {
-          name: 'Supported',
-          value: 'supported',
-          action: 'List supported platforms with credential requirements',
-          description: 'List supported platforms with credential requirements',
-          routing: {
-            request: {
-              method: 'GET',
-              url: '=/api/v1/platforms/supported',
-              
-            },
-          },
-        }
-        ],
-        default: 'create',
-      },
-      {
-            displayName: 'Platform type',
-            name: 'platform',
-            type: 'string',
-            required: true,
-            default: "",
-            options: [{name: 'discord', value: 'discord'}, {name: 'telegram', value: 'telegram'}, {name: 'whatsapp-evo', value: 'whatsapp-evo'}],
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['create'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'platform': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Friendly name for the platform instance',
-            name: 'name',
-            type: 'string',
-            required: true,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['create'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'name': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Optional description for the platform instance',
-            name: 'description',
-            type: 'string',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['create'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'description': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Platform credentials (JSON object). Use "gatekit platforms supported" to see required fields for each platform.',
-            name: 'credentials',
-            type: 'json',
-            required: true,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['create'],
-              },
-            },
-            routing: {
-              request: {
-                body: {
-                  'credentials': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Enable platform',
-            name: 'isActive',
-            type: 'boolean',
-            required: false,
-            default: true,
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['create'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'isActive': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Enable test mode',
-            name: 'testMode',
-            type: 'boolean',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['create'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'testMode': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
-          type: 'string',
-          required: true,
-          default: 'default',
-          description: 'Project identifier to operate on',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['create'],
-            },
-          },
-        },
-      {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
-          type: 'string',
-          required: true,
-          default: 'default',
-          description: 'Project identifier to operate on',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['list'],
-            },
-          },
-        },
-      {
-            displayName: 'Platform ID',
-            name: 'id',
-            type: 'string',
-            required: true,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['get'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'id': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
-          type: 'string',
-          required: true,
-          default: 'default',
-          description: 'Project identifier to operate on',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['get'],
-            },
-          },
-        },
-      {
-          displayName: 'Id',
-          name: 'id',
-          type: 'string',
-          required: true,
-          default: '',
-          description: 'id parameter',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['get'],
-            },
-          },
-        },
-      {
-            displayName: 'Updated friendly name',
-            name: 'name',
-            type: 'string',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['update'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'name': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Updated description',
-            name: 'description',
-            type: 'string',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['update'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'description': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Updated credentials (JSON object)',
-            name: 'credentials',
-            type: 'json',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['update'],
-              },
-            },
-            routing: {
-              request: {
-                body: {
-                  'credentials': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Enable/disable platform',
-            name: 'isActive',
-            type: 'boolean',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['update'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'isActive': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Enable/disable test mode',
-            name: 'testMode',
-            type: 'boolean',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['update'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'testMode': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
-          type: 'string',
-          required: true,
-          default: 'default',
-          description: 'Project identifier to operate on',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['update'],
-            },
-          },
-        },
-      {
-          displayName: 'Id',
-          name: 'id',
-          type: 'string',
-          required: true,
-          default: '',
-          description: 'id parameter',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['update'],
-            },
-          },
-        },
-      {
-            displayName: 'Platform ID',
-            name: 'id',
-            type: 'string',
-            required: true,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['delete'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'id': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
-          type: 'string',
-          required: true,
-          default: 'default',
-          description: 'Project identifier to operate on',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['delete'],
-            },
-          },
-        },
-      {
-          displayName: 'Id',
-          name: 'id',
-          type: 'string',
-          required: true,
-          default: '',
-          description: 'id parameter',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['delete'],
-            },
-          },
-        },
-      {
-            displayName: 'Platform ID',
-            name: 'id',
-            type: 'string',
-            required: true,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['register-webhook'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'id': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
-          type: 'string',
-          required: true,
-          default: 'default',
-          description: 'Project identifier to operate on',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['register-webhook'],
-            },
-          },
-        },
-      {
-          displayName: 'Id',
-          name: 'id',
-          type: 'string',
-          required: true,
-          default: '',
-          description: 'id parameter',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['register-webhook'],
-            },
-          },
-        },
-      {
-            displayName: 'WhatsApp Platform ID',
-            name: 'id',
-            type: 'string',
-            required: true,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['platforms'],
-                operation: ['qr-code'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'id': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
-          type: 'string',
-          required: true,
-          default: 'default',
-          description: 'Project identifier to operate on',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['qr-code'],
-            },
-          },
-        },
-      {
-          displayName: 'Id',
-          name: 'id',
-          type: 'string',
-          required: true,
-          default: '',
-          description: 'id parameter',
-          displayOptions: {
-            show: {
-              resource: ['platforms'],
-              operation: ['qr-code'],
             },
           },
         },
