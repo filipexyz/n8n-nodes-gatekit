@@ -31,6 +31,7 @@ npm install n8n-nodes-gatekit
 - **platforms update**: Update platform configuration
 - **platforms delete**: Remove platform configuration
 - **platforms register-webhook**: Register webhook URL with platform provider
+- **platforms qr-code**: Get QR code for WhatsApp authentication
 - **messages list**: List received messages for a project
 - **messages stats**: Get message statistics for a project
 - **messages get**: Get a specific message by ID
@@ -46,6 +47,7 @@ npm install n8n-nodes-gatekit
 - **platforms logs list**: List platform processing logs for a project
 - **platforms logs get**: List logs for a specific platform configuration
 - **platforms logs stats**: Get platform logs statistics and recent errors
+- **platforms supported**: List supported platforms with credential requirements
 
 ## Usage Examples
 
