@@ -25,6 +25,13 @@ npm install n8n-nodes-gatekit
 - **projects create**: Create a new project
 - **projects list**: List all projects
 - **projects update**: Update project name, description and settings
+- **platforms create**: Configure a new platform integration
+- **platforms list**: List configured platforms for project
+- **platforms get**: Get platform configuration details
+- **platforms update**: Update platform configuration
+- **platforms delete**: Remove platform configuration
+- **platforms register-webhook**: Register webhook URL with platform provider
+- **platforms qr-code**: Get QR code for WhatsApp authentication
 - **messages list**: List received messages for a project
 - **messages stats**: Get message statistics for a project
 - **messages get**: Get a specific message by ID
@@ -33,13 +40,6 @@ npm install n8n-nodes-gatekit
 - **messages status**: Check message delivery status
 - **messages retry**: Retry a failed message
 - **messages sent**: List sent messages for a project
-- **platforms create**: Configure a new platform integration
-- **platforms list**: List configured platforms for project
-- **platforms get**: Get platform configuration details
-- **platforms update**: Update platform configuration
-- **platforms delete**: Remove platform configuration
-- **platforms register-webhook**: Register webhook URL with platform provider
-- **platforms qr-code**: Get QR code for WhatsApp authentication
 - **keys create**: Generate a new API key
 - **keys list**: List all API keys for project
 - **keys revoke**: Revoke an API key
