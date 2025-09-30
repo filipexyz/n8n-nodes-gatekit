@@ -34,6 +34,7 @@ export class GateKit implements INodeType {
       type: 'options',
       noDataExpression: true,
       options: [
+        { name: 'Webhooks', value: 'webhooks' },
         { name: 'Members', value: 'members' },
         { name: 'Projects', value: 'projects' },
         { name: 'Platforms', value: 'platforms' },
@@ -41,8 +42,430 @@ export class GateKit implements INodeType {
         { name: 'ApiKeys', value: 'apikeys' },
         { name: 'Platform Logs', value: 'platform logs' }
       ],
-      default: 'members',
+      default: 'webhooks',
     },
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+          show: {
+            resource: ['webhooks'],
+          },
+        },
+        options: [
+          {
+          name: 'Create',
+          value: 'create',
+          action: 'Create a new webhook for event notifications',
+          description: 'Create a new webhook for event notifications',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/webhooks',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'List',
+          value: 'list',
+          action: 'List all webhooks for a project',
+          description: 'List all webhooks for a project',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/webhooks',
+              
+            },
+          },
+        },
+          {
+          name: 'Get',
+          value: 'get',
+          action: 'Get a specific webhook with delivery statistics',
+          description: 'Get a specific webhook with delivery statistics',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/webhooks/:webhookId',
+              
+            },
+          },
+        },
+          {
+          name: 'Update',
+          value: 'update',
+          action: 'Update a webhook configuration',
+          description: 'Update a webhook configuration',
+          routing: {
+            request: {
+              method: 'PATCH',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/webhooks/:webhookId',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Delete',
+          value: 'delete',
+          action: 'Delete a webhook',
+          description: 'Delete a webhook',
+          routing: {
+            request: {
+              method: 'DELETE',
+              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/webhooks/:webhookId',
+              
+            },
+          },
+        }
+        ],
+        default: 'create',
+      },
+      {
+            displayName: 'Friendly name for the webhook',
+            name: 'name',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Target URL for webhook delivery',
+            name: 'url',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'url': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Events to subscribe to (comma-separated: message.received,message.sent,message.failed)',
+            name: 'events',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'events': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Custom webhook secret (auto-generated if not provided)',
+            name: 'secret',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'secret': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['create'],
+            },
+          },
+        },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['list'],
+            },
+          },
+        },
+      {
+            displayName: 'Webhook ID',
+            name: 'webhookId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['get'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'webhookId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['get'],
+            },
+          },
+        },
+      {
+          displayName: 'WebhookId',
+          name: 'webhookId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'webhookId parameter',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['get'],
+            },
+          },
+        },
+      {
+            displayName: 'Webhook ID',
+            name: 'webhookId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'webhookId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'New webhook name',
+            name: 'name',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'New webhook URL',
+            name: 'url',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'url': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'New events subscription',
+            name: 'events',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'events': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Enable or disable webhook',
+            name: 'isActive',
+            type: 'boolean',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'isActive': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+          displayName: 'WebhookId',
+          name: 'webhookId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'webhookId parameter',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+            displayName: 'Webhook ID',
+            name: 'webhookId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['delete'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'webhookId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project Slug',
+          name: 'projectSlug',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['delete'],
+            },
+          },
+        },
+      {
+          displayName: 'WebhookId',
+          name: 'webhookId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'webhookId parameter',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['delete'],
+            },
+          },
+        },
       {
         displayName: 'Operation',
         name: 'operation',

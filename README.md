@@ -18,6 +18,11 @@ npm install n8n-nodes-gatekit
 
 ## Supported Operations
 
+- **webhooks create**: Create a new webhook for event notifications
+- **webhooks list**: List all webhooks for a project
+- **webhooks get**: Get a specific webhook with delivery statistics
+- **webhooks update**: Update a webhook configuration
+- **webhooks delete**: Delete a webhook
 - **members list**: List all members of a project
 - **members add**: Add a member to a project
 - **members update**: Update a member role in a project
