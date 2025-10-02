@@ -425,7 +425,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'DELETE',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}/aliases/:aliasId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}/aliases/{{ $parameter["aliasId"] }}',
               
             },
           },
@@ -1189,7 +1189,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'PATCH',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/members/:userId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/members/{{ $parameter["userId"] }}',
               body: {},
             },
           },
@@ -1202,7 +1202,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'DELETE',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/members/:userId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/members/{{ $parameter["userId"] }}',
               
             },
           },
@@ -1444,7 +1444,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/:messageId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/{{ $parameter["messageId"] }}',
               
             },
           },
@@ -2408,7 +2408,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/:platformId/logs',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/{{ $parameter["platformId"] }}/logs',
               
             },
           },
@@ -3672,7 +3672,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/:webhookId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/{{ $parameter["webhookId"] }}',
               
             },
           },
@@ -3685,7 +3685,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'PATCH',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/:webhookId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/{{ $parameter["webhookId"] }}',
               body: {},
             },
           },
@@ -3698,7 +3698,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'DELETE',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/:webhookId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/{{ $parameter["webhookId"] }}',
               
             },
           },
@@ -3711,7 +3711,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/:webhookId/deliveries',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/{{ $parameter["webhookId"] }}/deliveries',
               
             },
           },
