@@ -58,6 +58,17 @@ npm install n8n-nodes-gatekit
 - **projects update** - Update project name, description and settings
 - **projects delete** - Delete a project
 
+### Platforms
+
+- **platforms create** - Configure a new platform integration
+- **platforms list** - List configured platforms for project
+- **platforms get** - Get platform configuration details
+- **platforms update** - Update platform configuration
+- **platforms delete** - Remove platform configuration
+- **platforms register-webhook** - Register webhook URL with platform provider
+- **platforms qr-code** - Get QR code for WhatsApp authentication
+- **platforms supported** - List supported platforms with credential requirements
+
 ### Messages
 
 - **messages list** - List received messages for a project
@@ -70,17 +81,6 @@ npm install n8n-nodes-gatekit
 - **messages sent** - List sent messages for a project
 - **messages react** - Add a reaction to a message
 - **messages unreact** - Remove a reaction from a message
-
-### Platforms
-
-- **platforms create** - Configure a new platform integration
-- **platforms list** - List configured platforms for project
-- **platforms get** - Get platform configuration details
-- **platforms update** - Update platform configuration
-- **platforms delete** - Remove platform configuration
-- **platforms register-webhook** - Register webhook URL with platform provider
-- **platforms qr-code** - Get QR code for WhatsApp authentication
-- **platforms supported** - List supported platforms with credential requirements
 
 ### Identities
 
