@@ -34,15 +34,586 @@ export class GateKit implements INodeType {
       type: 'options',
       noDataExpression: true,
       options: [
+        { name: 'Webhooks', value: 'webhooks' },
         { name: 'Members', value: 'members' },
         { name: 'Projects', value: 'projects' },
         { name: 'Platforms', value: 'platforms' },
         { name: 'Messages', value: 'messages' },
+        { name: 'Identities', value: 'identities' },
+        { name: 'Auth', value: 'auth' },
         { name: 'ApiKeys', value: 'apikeys' },
         { name: 'Platform Logs', value: 'platform logs' }
       ],
-      default: 'members',
+      default: 'webhooks',
     },
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+          show: {
+            resource: ['webhooks'],
+          },
+        },
+        options: [
+          {
+          name: 'Create',
+          value: 'create',
+          action: 'Create a new webhook for event notifications',
+          description: 'Create a new webhook for event notifications',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'List',
+          value: 'list',
+          action: 'List all webhooks for a project',
+          description: 'List all webhooks for a project',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks',
+              
+            },
+          },
+        },
+          {
+          name: 'Get',
+          value: 'get',
+          action: 'Get a specific webhook with delivery statistics',
+          description: 'Get a specific webhook with delivery statistics',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/:webhookId',
+              
+            },
+          },
+        },
+          {
+          name: 'Update',
+          value: 'update',
+          action: 'Update a webhook configuration',
+          description: 'Update a webhook configuration',
+          routing: {
+            request: {
+              method: 'PATCH',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/:webhookId',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Delete',
+          value: 'delete',
+          action: 'Delete a webhook',
+          description: 'Delete a webhook',
+          routing: {
+            request: {
+              method: 'DELETE',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/:webhookId',
+              
+            },
+          },
+        },
+          {
+          name: 'Deliveries',
+          value: 'deliveries',
+          action: 'List webhook delivery attempts with filtering',
+          description: 'List webhook delivery attempts with filtering',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/webhooks/:webhookId/deliveries',
+              
+            },
+          },
+        }
+        ],
+        default: 'create',
+      },
+      {
+            displayName: 'Friendly name for the webhook',
+            name: 'name',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Target URL for webhook delivery',
+            name: 'url',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'url': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Events to subscribe to (comma-separated: message.received,message.sent,message.failed,button.clicked,reaction.added,reaction.removed)',
+            name: 'events',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'events': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Custom webhook secret (auto-generated if not provided)',
+            name: 'secret',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'secret': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['create'],
+            },
+          },
+        },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['list'],
+            },
+          },
+        },
+      {
+            displayName: 'Webhook ID',
+            name: 'webhookId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['get'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'webhookId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['get'],
+            },
+          },
+        },
+      {
+          displayName: 'WebhookId',
+          name: 'webhookId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'webhookId parameter',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['get'],
+            },
+          },
+        },
+      {
+            displayName: 'Webhook ID',
+            name: 'webhookId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'webhookId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'New webhook name',
+            name: 'name',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'New webhook URL',
+            name: 'url',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'url': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'New events subscription',
+            name: 'events',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'events': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Enable or disable webhook',
+            name: 'isActive',
+            type: 'boolean',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'isActive': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+          displayName: 'WebhookId',
+          name: 'webhookId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'webhookId parameter',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+            displayName: 'Webhook ID',
+            name: 'webhookId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['delete'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'webhookId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['delete'],
+            },
+          },
+        },
+      {
+          displayName: 'WebhookId',
+          name: 'webhookId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'webhookId parameter',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['delete'],
+            },
+          },
+        },
+      {
+            displayName: 'Webhook ID',
+            name: 'webhookId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['deliveries'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'webhookId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter by event type',
+            name: 'event',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['deliveries'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'event': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter by delivery status',
+            name: 'status',
+            type: 'string',
+            required: false,
+            default: "",
+            options: [{name: 'pending', value: 'pending'}, {name: 'success', value: 'success'}, {name: 'failed', value: 'failed'}],
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['deliveries'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'status': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Number of deliveries to return (1-100)',
+            name: 'limit',
+            type: 'number',
+            required: false,
+            default: 50,
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['deliveries'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'limit': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Number of deliveries to skip',
+            name: 'offset',
+            type: 'number',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['webhooks'],
+                operation: ['deliveries'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'offset': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['deliveries'],
+            },
+          },
+        },
+      {
+          displayName: 'WebhookId',
+          name: 'webhookId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'webhookId parameter',
+          displayOptions: {
+            show: {
+              resource: ['webhooks'],
+              operation: ['deliveries'],
+            },
+          },
+        },
       {
         displayName: 'Operation',
         name: 'operation',
@@ -62,7 +633,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/:slug/members',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/members',
               
             },
           },
@@ -75,7 +646,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'POST',
-              url: '=/api/v1/projects/:slug/members',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/members',
               body: {},
             },
           },
@@ -88,7 +659,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'PATCH',
-              url: '=/api/v1/projects/:slug/members/:userId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/members/:userId',
               body: {},
             },
           },
@@ -101,7 +672,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'DELETE',
-              url: '=/api/v1/projects/:slug/members/:userId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/members/:userId',
               
             },
           },
@@ -110,12 +681,12 @@ export class GateKit implements INodeType {
         default: 'list',
       },
       {
-          displayName: 'Slug',
-          name: 'slug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
-          default: '',
-          description: 'slug parameter',
+          default: 'default',
+          description: 'Project identifier to operate on',
           displayOptions: {
             show: {
               resource: ['members'],
@@ -166,12 +737,12 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Slug',
-          name: 'slug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
-          default: '',
-          description: 'slug parameter',
+          default: 'default',
+          description: 'Project identifier to operate on',
           displayOptions: {
             show: {
               resource: ['members'],
@@ -222,12 +793,12 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Slug',
-          name: 'slug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
-          default: '',
-          description: 'slug parameter',
+          default: 'default',
+          description: 'Project identifier to operate on',
           displayOptions: {
             show: {
               resource: ['members'],
@@ -271,12 +842,12 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Slug',
-          name: 'slug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
-          default: '',
-          description: 'slug parameter',
+          default: 'default',
+          description: 'Project identifier to operate on',
           displayOptions: {
             show: {
               resource: ['members'],
@@ -336,15 +907,41 @@ export class GateKit implements INodeType {
           },
         },
           {
+          name: 'Get',
+          value: 'get',
+          action: 'Get project details',
+          description: 'Get project details',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}',
+              
+            },
+          },
+        },
+          {
           name: 'Update',
           value: 'update',
           action: 'Update project name, description and settings',
           description: 'Update project name, description and settings',
           routing: {
             request: {
-              method: 'GET',
-              url: '=/api/v1/projects/:slug',
+              method: 'PATCH',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}',
               body: {},
+            },
+          },
+        },
+          {
+          name: 'Delete',
+          value: 'delete',
+          action: 'Delete a project',
+          description: 'Delete a project',
+          routing: {
+            request: {
+              method: 'DELETE',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}',
+              
             },
           },
         }
@@ -414,6 +1011,20 @@ export class GateKit implements INodeType {
               },
             },
           },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['projects'],
+              operation: ['get'],
+            },
+          },
+        },
       {
             displayName: 'Project name',
             name: 'name',
@@ -499,16 +1110,30 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Slug',
-          name: 'slug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
-          default: '',
-          description: 'slug parameter',
+          default: 'default',
+          description: 'Project identifier to operate on',
           displayOptions: {
             show: {
               resource: ['projects'],
               operation: ['update'],
+            },
+          },
+        },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['projects'],
+              operation: ['delete'],
             },
           },
         },
@@ -531,7 +1156,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'POST',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms',
               body: {},
             },
           },
@@ -544,7 +1169,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms',
               
             },
           },
@@ -557,7 +1182,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/{{ $parameter["id"] }}',
               
             },
           },
@@ -570,7 +1195,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'PATCH',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/{{ $parameter["id"] }}',
               body: {},
             },
           },
@@ -583,7 +1208,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'DELETE',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/{{ $parameter["id"] }}',
               
             },
           },
@@ -596,7 +1221,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'POST',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}/register-webhook',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/{{ $parameter["id"] }}/register-webhook',
               
             },
           },
@@ -609,7 +1234,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/platforms/{{ $parameter["id"] }}/qr-code',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/{{ $parameter["id"] }}/qr-code',
               
             },
           },
@@ -757,8 +1382,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -771,8 +1396,8 @@ export class GateKit implements INodeType {
           },
         },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -806,8 +1431,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -939,8 +1564,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -988,8 +1613,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1037,8 +1662,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1086,8 +1711,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1132,7 +1757,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/messages',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages',
               body: {},
             },
           },
@@ -1145,7 +1770,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/messages/stats',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/stats',
               
             },
           },
@@ -1158,7 +1783,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/messages/:messageId',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/:messageId',
               
             },
           },
@@ -1171,7 +1796,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'DELETE',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/messages/cleanup',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/cleanup',
               
             },
           },
@@ -1184,7 +1809,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'POST',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/messages/send',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/send',
               body: {},
             },
           },
@@ -1197,7 +1822,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/messages/status/{{ $parameter["jobId"] }}',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/status/{{ $parameter["jobId"] }}',
               
             },
           },
@@ -1210,7 +1835,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'POST',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/messages/retry/{{ $parameter["jobId"] }}',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/retry/{{ $parameter["jobId"] }}',
               
             },
           },
@@ -1223,8 +1848,34 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/messages/sent',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/sent',
               
+            },
+          },
+        },
+          {
+          name: 'React',
+          value: 'react',
+          action: 'Add a reaction to a message',
+          description: 'Add a reaction to a message',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/react',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Unreact',
+          value: 'unreact',
+          action: 'Remove a reaction from a message',
+          description: 'Remove a reaction from a message',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/unreact',
+              body: {},
             },
           },
         }
@@ -1442,8 +2093,29 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+            displayName: 'Include reactions on each message',
+            name: 'reactions',
+            type: 'boolean',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['list'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'reactions': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1456,8 +2128,8 @@ export class GateKit implements INodeType {
           },
         },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1491,8 +2163,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1540,8 +2212,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1680,8 +2352,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1715,8 +2387,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1764,8 +2436,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1876,8 +2548,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -1889,6 +2561,1003 @@ export class GateKit implements INodeType {
             },
           },
         },
+      {
+            displayName: 'Platform configuration ID',
+            name: 'platformId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['react'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'platformId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Message ID to react to',
+            name: 'messageId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['react'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'messageId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Emoji to react with (e.g., "👍", "❤️")',
+            name: 'emoji',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['react'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'emoji': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['messages'],
+              operation: ['react'],
+            },
+          },
+        },
+      {
+            displayName: 'Platform configuration ID',
+            name: 'platformId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['unreact'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'platformId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Message ID to unreact from',
+            name: 'messageId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['unreact'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'messageId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Emoji to remove (e.g., "👍", "❤️")',
+            name: 'emoji',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['unreact'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'emoji': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['messages'],
+              operation: ['unreact'],
+            },
+          },
+        },
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+          show: {
+            resource: ['identities'],
+          },
+        },
+        options: [
+          {
+          name: 'Create',
+          value: 'create',
+          action: 'Create a new identity with platform aliases',
+          description: 'Create a new identity with platform aliases',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'List',
+          value: 'list',
+          action: 'List all identities for a project',
+          description: 'List all identities for a project',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities',
+              
+            },
+          },
+        },
+          {
+          name: 'Lookup',
+          value: 'lookup',
+          action: 'Lookup identity by platform user ID',
+          description: 'Lookup identity by platform user ID',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/lookup',
+              
+            },
+          },
+        },
+          {
+          name: 'Get',
+          value: 'get',
+          action: 'Get a specific identity by ID',
+          description: 'Get a specific identity by ID',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}',
+              
+            },
+          },
+        },
+          {
+          name: 'Update',
+          value: 'update',
+          action: 'Update identity metadata (display name, email, metadata)',
+          description: 'Update identity metadata (display name, email, metadata)',
+          routing: {
+            request: {
+              method: 'PATCH',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Add-alias',
+          value: 'add-alias',
+          action: 'Add a platform alias to an existing identity',
+          description: 'Add a platform alias to an existing identity',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}/aliases',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Remove-alias',
+          value: 'remove-alias',
+          action: 'Remove a platform alias from an identity',
+          description: 'Remove a platform alias from an identity',
+          routing: {
+            request: {
+              method: 'DELETE',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}/aliases/:aliasId',
+              
+            },
+          },
+        },
+          {
+          name: 'Delete',
+          value: 'delete',
+          action: 'Delete an identity and all its aliases',
+          description: 'Delete an identity and all its aliases',
+          routing: {
+            request: {
+              method: 'DELETE',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}',
+              
+            },
+          },
+        },
+          {
+          name: 'Messages',
+          value: 'messages',
+          action: 'Get all messages for an identity (across all linked platform accounts)',
+          description: 'Get all messages for an identity (across all linked platform accounts)',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}/messages',
+              
+            },
+          },
+        },
+          {
+          name: 'Reactions',
+          value: 'reactions',
+          action: 'Get all reactions for an identity (across all linked platform accounts)',
+          description: 'Get all reactions for an identity (across all linked platform accounts)',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/identities/{{ $parameter["id"] }}/reactions',
+              
+            },
+          },
+        }
+        ],
+        default: 'create',
+      },
+      {
+            displayName: 'Display name for the identity',
+            name: 'displayName',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'displayName': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Email address for the identity',
+            name: 'email',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'email': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'JSON metadata for the identity',
+            name: 'metadata',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'metadata': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'JSON array of platform aliases',
+            name: 'aliases',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['create'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'aliases': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['create'],
+            },
+          },
+        },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['list'],
+            },
+          },
+        },
+      {
+            displayName: 'Platform configuration ID',
+            name: 'platformId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['lookup'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'platformId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Provider-specific user ID',
+            name: 'providerUserId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['lookup'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'providerUserId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['lookup'],
+            },
+          },
+        },
+      {
+            displayName: 'Identity ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['get'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['get'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['get'],
+            },
+          },
+        },
+      {
+            displayName: 'Identity ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Updated display name',
+            name: 'displayName',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'displayName': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Updated email address',
+            name: 'email',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'email': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Updated JSON metadata',
+            name: 'metadata',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['update'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'metadata': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['update'],
+            },
+          },
+        },
+      {
+            displayName: 'Identity ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['add-alias'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Platform configuration ID',
+            name: 'platformId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['add-alias'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'platformId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Provider-specific user ID',
+            name: 'providerUserId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['add-alias'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'providerUserId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Display name on the platform',
+            name: 'providerUserDisplay',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['add-alias'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'providerUserDisplay': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['add-alias'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['add-alias'],
+            },
+          },
+        },
+      {
+            displayName: 'Identity ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['remove-alias'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Alias ID to remove',
+            name: 'aliasId',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['remove-alias'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'aliasId': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['remove-alias'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['remove-alias'],
+            },
+          },
+        },
+      {
+          displayName: 'AliasId',
+          name: 'aliasId',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'aliasId parameter',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['remove-alias'],
+            },
+          },
+        },
+      {
+            displayName: 'Identity ID to delete',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['delete'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['delete'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['delete'],
+            },
+          },
+        },
+      {
+            displayName: 'Identity ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['messages'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['messages'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['messages'],
+            },
+          },
+        },
+      {
+            displayName: 'Identity ID',
+            name: 'id',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['identities'],
+                operation: ['reactions'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'id': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['reactions'],
+            },
+          },
+        },
+      {
+          displayName: 'Id',
+          name: 'id',
+          type: 'string',
+          required: true,
+          default: '',
+          description: 'id parameter',
+          displayOptions: {
+            show: {
+              resource: ['identities'],
+              operation: ['reactions'],
+            },
+          },
+        },
+      {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+          show: {
+            resource: ['auth'],
+          },
+        },
+        options: [
+          {
+          name: 'Whoami',
+          value: 'whoami',
+          action: 'Get current authentication context and permissions',
+          description: 'Get current authentication context and permissions',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/auth/whoami',
+              
+            },
+          },
+        }
+        ],
+        default: 'whoami',
+      },
       {
         displayName: 'Operation',
         name: 'operation',
@@ -1908,7 +3577,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'POST',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/keys',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/keys',
               body: {},
             },
           },
@@ -1921,7 +3590,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/keys',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/keys',
               
             },
           },
@@ -1934,7 +3603,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'DELETE',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/keys/{{ $parameter["keyId"] }}',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/keys/{{ $parameter["keyId"] }}',
               
             },
           },
@@ -1947,7 +3616,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'POST',
-              url: '=/api/v1/projects/{{ $parameter["projectSlug"] }}/keys/{{ $parameter["keyId"] }}/roll',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/keys/{{ $parameter["keyId"] }}/roll',
               
             },
           },
@@ -2019,8 +3688,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -2033,8 +3702,8 @@ export class GateKit implements INodeType {
           },
         },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -2068,8 +3737,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -2117,8 +3786,8 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Project Slug',
-          name: 'projectSlug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
           default: 'default',
@@ -2163,7 +3832,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/:slug/platforms/logs',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/logs',
               
             },
           },
@@ -2176,7 +3845,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/:slug/platforms/:platformId/logs',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/:platformId/logs',
               
             },
           },
@@ -2189,7 +3858,7 @@ export class GateKit implements INodeType {
           routing: {
             request: {
               method: 'GET',
-              url: '=/api/v1/projects/:slug/platforms/logs/stats',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/platforms/logs/stats',
               
             },
           },
@@ -2345,12 +4014,12 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Slug',
-          name: 'slug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
-          default: '',
-          description: 'slug parameter',
+          default: 'default',
+          description: 'Project identifier to operate on',
           displayOptions: {
             show: {
               resource: ['platform logs'],
@@ -2485,12 +4154,12 @@ export class GateKit implements INodeType {
             },
           },
       {
-          displayName: 'Slug',
-          name: 'slug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
-          default: '',
-          description: 'slug parameter',
+          default: 'default',
+          description: 'Project identifier to operate on',
           displayOptions: {
             show: {
               resource: ['platform logs'],
@@ -2513,12 +4182,12 @@ export class GateKit implements INodeType {
           },
         },
       {
-          displayName: 'Slug',
-          name: 'slug',
+          displayName: 'Project',
+          name: 'project',
           type: 'string',
           required: true,
-          default: '',
-          description: 'slug parameter',
+          default: 'default',
+          description: 'Project identifier to operate on',
           displayOptions: {
             show: {
               resource: ['platform logs'],
