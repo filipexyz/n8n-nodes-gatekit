@@ -97,6 +97,8 @@ npm install n8n-nodes-gatekit
 
 ### Auth
 
+- **auth signup** - Create a new user account (first user becomes admin)
+- **auth login** - Login with email and password
 - **auth whoami** - Get current authentication context and permissions
 
 ### ApiKeys
