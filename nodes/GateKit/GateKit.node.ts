@@ -313,6 +313,32 @@ export class GateKit implements INodeType {
         },
         options: [
           {
+          name: 'Signup',
+          value: 'signup',
+          action: 'Create a new user account (first user becomes admin)',
+          description: 'Create a new user account (first user becomes admin)',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/auth/signup',
+              body: {},
+            },
+          },
+        },
+          {
+          name: 'Login',
+          value: 'login',
+          action: 'Login with email and password',
+          description: 'Login with email and password',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/auth/login',
+              body: {},
+            },
+          },
+        },
+          {
           name: 'Whoami',
           value: 'whoami',
           action: 'Get current authentication context and permissions',
@@ -326,8 +352,113 @@ export class GateKit implements INodeType {
           },
         }
         ],
-        default: 'whoami',
+        default: 'signup',
       },
+      {
+            displayName: 'Email address',
+            name: 'email',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['signup'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'email': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Password (min 8 chars, 1 uppercase, 1 number)',
+            name: 'password',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['signup'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'password': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Full name',
+            name: 'name',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['signup'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Email address',
+            name: 'email',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['login'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'email': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Password',
+            name: 'password',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['login'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'password': '={{$value}}',
+                },
+              },
+            },
+          },
       {
         displayName: 'Operation',
         name: 'operation',
