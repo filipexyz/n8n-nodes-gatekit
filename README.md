@@ -43,13 +43,6 @@ npm install n8n-nodes-gatekit
 - **webhooks delete** - Delete a webhook
 - **webhooks deliveries** - List webhook delivery attempts with filtering
 
-### Members
-
-- **members list** - List all members of a project
-- **members add** - Add a member to a project
-- **members update** - Update a member role in a project
-- **members remove** - Remove a member from a project
-
 ### Projects
 
 - **projects create** - Create a new project
@@ -73,14 +66,22 @@ npm install n8n-nodes-gatekit
 
 - **messages list** - List received messages for a project
 - **messages stats** - Get message statistics for a project
+- **messages sent** - List sent messages for a project
 - **messages get** - Get a specific message by ID
 - **messages cleanup** - Delete messages older than specified days
 - **messages send** - Send a message to platforms
 - **messages status** - Check message delivery status
 - **messages retry** - Retry a failed message
-- **messages sent** - List sent messages for a project
 - **messages react** - Add a reaction to a message
 - **messages unreact** - Remove a reaction from a message
+
+### Members
+
+- **members list** - List all members of a project
+- **members add** - Add a member to a project
+- **members update** - Update a member role in a project
+- **members remove** - Remove a member from a project
+- **members invite** - Invite a user to join a project
 
 ### Identities
 
@@ -99,7 +100,9 @@ npm install n8n-nodes-gatekit
 
 - **auth signup** - Create a new user account (first user becomes admin)
 - **auth login** - Login with email and password
+- **auth accept-invite** - Accept a project invitation and create account
 - **auth whoami** - Get current authentication context and permissions
+- **auth update-password** - Update your password (requires current password)
 
 ### ApiKeys
 

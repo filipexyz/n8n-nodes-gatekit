@@ -339,6 +339,19 @@ export class GateKit implements INodeType {
           },
         },
           {
+          name: 'Accept-invite',
+          value: 'accept-invite',
+          action: 'Accept a project invitation and create account',
+          description: 'Accept a project invitation and create account',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/auth/accept-invite',
+              body: {},
+            },
+          },
+        },
+          {
           name: 'Whoami',
           value: 'whoami',
           action: 'Get current authentication context and permissions',
@@ -348,6 +361,19 @@ export class GateKit implements INodeType {
               method: 'GET',
               url: '=/api/v1/auth/whoami',
               
+            },
+          },
+        },
+          {
+          name: 'Update-password',
+          value: 'update-password',
+          action: 'Update your password (requires current password)',
+          description: 'Update your password (requires current password)',
+          routing: {
+            request: {
+              method: 'PATCH',
+              url: '=/api/v1/auth/password',
+              body: {},
             },
           },
         }
@@ -455,6 +481,111 @@ export class GateKit implements INodeType {
               request: {
                 qs: {
                   'password': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Invite token from invitation link',
+            name: 'token',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['accept-invite'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'token': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Full name',
+            name: 'name',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['accept-invite'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'name': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Password (min 8 chars, 1 uppercase, 1 number)',
+            name: 'password',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['accept-invite'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'password': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Current password',
+            name: 'currentPassword',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['update-password'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'currentPassword': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'New password (min 8 chars, 1 uppercase, 1 number)',
+            name: 'newPassword',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['auth'],
+                operation: ['update-password'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'newPassword': '={{$value}}',
                 },
               },
             },
@@ -1337,6 +1468,19 @@ export class GateKit implements INodeType {
               
             },
           },
+        },
+          {
+          name: 'Invite',
+          value: 'invite',
+          action: 'Invite a user to join a project',
+          description: 'Invite a user to join a project',
+          routing: {
+            request: {
+              method: 'POST',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/members/invite',
+              body: {},
+            },
+          },
         }
         ],
         default: 'list',
@@ -1531,6 +1675,41 @@ export class GateKit implements INodeType {
           },
         },
       {
+            displayName: 'Email address of user to invite',
+            name: 'email',
+            type: 'string',
+            required: true,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['members'],
+                operation: ['invite'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'email': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['members'],
+              operation: ['invite'],
+            },
+          },
+        },
+      {
         displayName: 'Operation',
         name: 'operation',
         type: 'options',
@@ -1563,6 +1742,19 @@ export class GateKit implements INodeType {
             request: {
               method: 'GET',
               url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/stats',
+              
+            },
+          },
+        },
+          {
+          name: 'Sent',
+          value: 'sent',
+          action: 'List sent messages for a project',
+          description: 'List sent messages for a project',
+          routing: {
+            request: {
+              method: 'GET',
+              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/sent',
               
             },
           },
@@ -1628,19 +1820,6 @@ export class GateKit implements INodeType {
             request: {
               method: 'POST',
               url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/retry/{{ $parameter["jobId"] }}',
-              
-            },
-          },
-        },
-          {
-          name: 'Sent',
-          value: 'sent',
-          action: 'List sent messages for a project',
-          description: 'List sent messages for a project',
-          routing: {
-            request: {
-              method: 'GET',
-              url: '=/api/v1/projects/{{ $parameter["project"] }}/messages/sent',
               
             },
           },
@@ -1930,6 +2109,104 @@ export class GateKit implements INodeType {
             show: {
               resource: ['messages'],
               operation: ['stats'],
+            },
+          },
+        },
+      {
+            displayName: 'Filter by platform',
+            name: 'platform',
+            type: 'string',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['sent'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'platform': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Filter by status (pending, sent, failed)',
+            name: 'status',
+            type: 'string',
+            required: false,
+            default: "",
+            options: [{name: 'pending', value: 'pending'}, {name: 'sent', value: 'sent'}, {name: 'failed', value: 'failed'}],
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['sent'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'status': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Number of messages to return',
+            name: 'limit',
+            type: 'number',
+            required: false,
+            default: 50,
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['sent'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'limit': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+            displayName: 'Number of messages to skip',
+            name: 'offset',
+            type: 'number',
+            required: false,
+            default: "",
+            
+            displayOptions: {
+              show: {
+                resource: ['messages'],
+                operation: ['sent'],
+              },
+            },
+            routing: {
+              request: {
+                qs: {
+                  'offset': '={{$value}}',
+                },
+              },
+            },
+          },
+      {
+          displayName: 'Project',
+          name: 'project',
+          type: 'string',
+          required: true,
+          default: 'default',
+          description: 'Project identifier to operate on',
+          displayOptions: {
+            show: {
+              resource: ['messages'],
+              operation: ['sent'],
             },
           },
         },
@@ -2252,104 +2529,6 @@ export class GateKit implements INodeType {
             show: {
               resource: ['messages'],
               operation: ['retry'],
-            },
-          },
-        },
-      {
-            displayName: 'Filter by platform',
-            name: 'platform',
-            type: 'string',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['messages'],
-                operation: ['sent'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'platform': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Filter by status (pending, sent, failed)',
-            name: 'status',
-            type: 'string',
-            required: false,
-            default: "",
-            options: [{name: 'pending', value: 'pending'}, {name: 'sent', value: 'sent'}, {name: 'failed', value: 'failed'}],
-            displayOptions: {
-              show: {
-                resource: ['messages'],
-                operation: ['sent'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'status': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Number of messages to return',
-            name: 'limit',
-            type: 'number',
-            required: false,
-            default: 50,
-            
-            displayOptions: {
-              show: {
-                resource: ['messages'],
-                operation: ['sent'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'limit': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-            displayName: 'Number of messages to skip',
-            name: 'offset',
-            type: 'number',
-            required: false,
-            default: "",
-            
-            displayOptions: {
-              show: {
-                resource: ['messages'],
-                operation: ['sent'],
-              },
-            },
-            routing: {
-              request: {
-                qs: {
-                  'offset': '={{$value}}',
-                },
-              },
-            },
-          },
-      {
-          displayName: 'Project',
-          name: 'project',
-          type: 'string',
-          required: true,
-          default: 'default',
-          description: 'Project identifier to operate on',
-          displayOptions: {
-            show: {
-              resource: ['messages'],
-              operation: ['sent'],
             },
           },
         },
