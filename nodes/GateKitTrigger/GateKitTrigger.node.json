@@ -1,0 +1,21 @@
+{
+  "node": "n8n-nodes-gatekit.GateKitTrigger",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": [
+    "Communication",
+    "Trigger"
+  ],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://docs.gatekit.dev/authentication"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://docs.gatekit.dev/webhooks"
+      }
+    ]
+  }
+}
